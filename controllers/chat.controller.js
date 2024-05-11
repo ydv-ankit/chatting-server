@@ -24,8 +24,8 @@ module.exports.newChat = async (req, res) => {
 
 module.exports.getChat = async (req, res) => {
   try {
-    const { chatId } = req.params;
-    const chat = await chatModel.findById(chatId);
+    const { id } = req.params;
+    const chat = await chatModel.findById(id);
     res.status(200).json({ chat });
   } catch (error) {
     console.log(error);

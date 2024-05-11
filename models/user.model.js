@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+  fullname: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   username: {
     type: String,
     required: true,
@@ -37,6 +42,8 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+},{
+  timestamps: true,
 });
 
 const userModel = mongoose.model("User", userSchema);

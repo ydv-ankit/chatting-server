@@ -14,17 +14,16 @@ module.exports.login = async (req, res) => {
       .findOne({ username, password })
       .select("-password");
 
-    user.isActive = true;
-    await user.save();
-
     if (user) {
+      user.isActive = true;
+      await user.save();
       const token = generateJwtToken({
         userId: user?._id,
         username: user?.username,
       });
       res.cookie("token", token, cookieOptions).status(200).json({ user });
     } else {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: "Invalid Credentials" });
     }
   } catch (error) {
     console.log(error);
@@ -35,10 +34,17 @@ module.exports.login = async (req, res) => {
 // new user
 module.exports.signup = async (req, res) => {
   try {
-    const { username, email, password, gender, role } = req.body;
-    const avatar = `https://avatar.iran.liara.run/username?username=${username}`;
+    const { fullname, username, email, password, gender, role } = req.body;
+
+    const userExists = await userModel.findOne({ username, email });
+    if (userExists) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
+    let avatar = `https://avatar.iran.liara.run/public/username=${username}`;
 
     const user = await userModel.create({
+      fullname,
       username,
       email,
       password,

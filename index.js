@@ -36,7 +36,7 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", protectedRoute, userRoutes);
 app.use("/api/chats", protectedRoute, chatRoutes);
-app.use("/api/mesaages", protectedRoute, messageRoutes);
+app.use("/api/messages", protectedRoute, messageRoutes);
 
 // server listening
 server.listen(PORT, () => {
