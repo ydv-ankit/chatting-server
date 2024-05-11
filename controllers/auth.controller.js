@@ -9,9 +9,9 @@ const cookieOptions = {
 // login
 module.exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     const user = await userModel
-      .findOne({ email, password })
+      .findOne({ username, password })
       .select("-password");
 
     user.isActive = true;
