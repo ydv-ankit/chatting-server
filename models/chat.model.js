@@ -7,6 +7,7 @@ const chatSchema = new mongoose.Schema(
       required: true,
     },
     messages: {
+      ref: "message",
       type: Array,
     },
   },

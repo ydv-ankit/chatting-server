@@ -6,6 +6,6 @@ router.post('/new', newMessage);
 
 router.get('/get/:id', getMessage);
 
-router.get('/:sender/:receiver', getMessages);
+router.get('/:chatId', getMessages);
 
 module.exports = router;

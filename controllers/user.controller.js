@@ -4,7 +4,7 @@ const userModel = require("../models/user.model");
 module.exports.getUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await userModel.findById(id);
+    const user = await userModel.findById(id).select("-password");
     if (user) {
       res.status(200).json({ user });
     } else {
