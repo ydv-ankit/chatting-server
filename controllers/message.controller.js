@@ -1,5 +1,7 @@
 const messageModel = require("../models/message.model");
 const chatModel = require("../models/chat.model");
+const { newChat } = require("./chat.controller");
+const { getOnlineUserSocketId, io} = require("../socket/socket");
 
 module.exports.newMessage = async (req, res) => {
   try {
@@ -17,7 +19,19 @@ module.exports.newMessage = async (req, res) => {
     if (chat) {
       chat.messages.push(newMessage._id);
       await chat.save();
+    }else{
+      req.body.participants = [sender, receiver];
+      await newChat(req, res);
     }
+    // send message to receiver
+    const receiverSocketId = getOnlineUserSocketId(receiver);
+    console.log("receiverSocketId:", receiverSocketId);
+
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("new message", newMessage);
+      console.log("message sent to receiver");
+    }
+
     res.status(200).json({ message: newMessage });
   } catch (error) {
     console.log(error);
